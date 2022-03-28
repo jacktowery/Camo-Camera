@@ -7,6 +7,10 @@ var visionMode = 0;
 var environmentMode = 0;
 var avgCaptureColor = [0, 0, 0];
 
+var webcam;
+var bgColorPreview = $('#bgColorPreview');
+var avgColorPreview = $('#avgColorPreview')
+
 var environmentColors = {
 	jungle: { r: 40, g: 124, b: 52 },
 	desert: { r: 230, g: 195, b: 131 },
@@ -21,6 +25,7 @@ updateEnvironment();
 
 function setup() {
 	canvas = createCanvas(640, 480);
+	canvas.id('webcam');
 	pixelDensity(1);
 	background(255);
 
@@ -28,58 +33,14 @@ function setup() {
 	capture.size(640, 480);
 	capture.hide();
 
-	// SETUP OUTPUTS
-	/*
-	// Average Color Text
-	textSize(16);
-	textAlign(LEFT, TOP);
-	fill(0, 0, 0);
-	text("Average Color of Webcam Feed", 650, 0);
-
-	// Average Color Rectangle
-	fill(avgCaptureColor[0], avgCaptureColor[1], avgCaptureColor[2]);
-	noStroke();
-	rect(650, 20, 300, 50);
-
-	// Comparing Color Text
-	textSize(16);
-	textAlign(LEFT, TOP);
-	fill(0, 0, 0);
-	text("Color to Compare To", 650, 80);
-
-	// Comparing Color Rectangle
-	fill(rainforest[0], rainforest[1], rainforest[2]);
-	noStroke();
-	rect(650, 100, 300, 50);
-
-	// Percent Difference Title Text
-	textSize(16);
-	textAlign(LEFT, TOP);
-	fill(0, 0, 0);
-	text("Difference:", 650, 160);
-
-	// Percent Difference Value Text1
-	textSize(16);
-	textAlign(LEFT, TOP);
-	fill(0, 0, 0);
-	text("100%", 650, 190);
-
-	// Percent Difference Value Text2
-	textSize(16);
-	textAlign(LEFT, TOP);
-	fill(0, 0, 0);
-	text("100%", 650, 210);
-    */
+	webcam = document.getElementById("webcam");
 }
 
 function draw() {
-	// Flip Webcam Image
-	//translate(640,0);
-	//scale(-1, 1);
 	// Capture Webcam Frame
 	var capimg = capture.get();
 
-	// Image Processing
+	// Camera Image Processing
 	if (capimg.width > 0) {
 		capimg.loadPixels(); // Load pixel array
 
@@ -148,6 +109,10 @@ function draw() {
 	avgCaptureColor[1] /= numPixels;
 	avgCaptureColor[2] /= numPixels;
 
+	// Update People Average Color Preview in Scoreboard
+	let avgStr = "rgb(" + avgCaptureColor[0] + "," + avgCaptureColor[1] + "," + avgCaptureColor[2] + ")";
+	avgColorPreview.css("color", avgStr);
+
 	// Compare Average Webcam Color to Background Color
 	var webcamHSB = RGBToHSB(avgCaptureColor[0], avgCaptureColor[1], avgCaptureColor[2]);
 	var sampleHSB = RGBToHSB(currentBG[0], currentBG[1], currentBG[2]);
@@ -201,20 +166,32 @@ function updateVision() {
 }
 
 function updateEnvironment() {
+	let htmlElem = $("html");
+
 	// Update mode value used in p5.js code
 	environmentMode = $("#environmentSelector").val();
 
 	// Update color values used in p5.js code
 	if (environmentMode == 0) {
 		currentBG = [environmentColors.jungle.r, environmentColors.jungle.g, environmentColors.jungle.b];
+		// Change Background
+		htmlElem.css('background-image', 'url("images/jungle.jpg")');
 	} else if (environmentMode == 1) {
 		currentBG = [environmentColors.desert.r, environmentColors.desert.g, environmentColors.desert.b];
+		// Change Background
+		htmlElem.css('background-image', 'url("images/desert.jpg")');
 	} else if (environmentMode == 2) {
 		currentBG = [environmentColors.tundra.r, environmentColors.tundra.g, environmentColors.tundra.b];
+		// Change Background
+		htmlElem.css('background-image', 'url("images/tundra.jpg")');
 	} else if (environmentMode == 3) {
 		currentBG = [environmentColors.ocean.r, environmentColors.ocean.g, environmentColors.ocean.b];
+		// Change Background
+		htmlElem.css('background-image', 'url("images/ocean.jpg")');
 	} else if (environmentMode == 4) {
 		currentBG = [environmentColors.forest.r, environmentColors.forest.g, environmentColors.forest.b];
+		// Change Background
+		htmlElem.css('background-image', 'url("images/gapines.jpg")');
 	} else {
 		currentBG = [255, 0, 0];
 	}
@@ -230,9 +207,10 @@ function updateEnvironment() {
 		currentBG = toAchromatopsia(currentBG[0], currentBG[1], currentBG[2], 1.0);
 	}
 
-	// Update background color behind webcam view
+	// Update Background Color Preview in Scoreboard
 	let bgStr = "rgb(" + currentBG[0] + "," + currentBG[1] + "," + currentBG[2] + ")";
-	$("html").css("background-color", bgStr);
+	bgColorPreview.css("background-color", bgStr);
+
 }
 
 // ** COLOR VISION TRANSFORMATION FUNCTIONS **

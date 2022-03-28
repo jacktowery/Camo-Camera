@@ -6,3 +6,24 @@
   content: "";
   margin-left: 3pt;
 }
+
+html {
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.card {
+  backdrop-filter: blur(6px);
+  background-color: rgba(255,255,255,0.7);
+}
+
+#bgColorPreview {
+  width: 96px;
+  height: 60px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
