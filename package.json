@@ -1,0 +1,15 @@
+{
+  "name": "camo-camera",
+  "version": "1.0.0",
+  "description": "Camo Camera Prototype for LMC 6605 Zoo Games",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Jack Towery, Ines Acosta, Josh Terry",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+	<link rel="stylesheet" href="style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://kit.fontawesome.com/9aef0c2001.js" crossorigin="anonymous"></script>
+	<script src="p5/p5.min.js"></script>
+	<title>Technical Prototype</title>
+</head>
+
+<body id="body">
+	<section class="section has-text-centered">
+		<!-- Title & Controls-->
+		<div class="container">
+			<div class="columns">
+				<div class="column">
+					<div class="card">
+						<div class="card-content">
+							<span class="icon is-small spaced-icons">
+								<i class="fa-solid fa-otter"></i>
+								<i class="fa-solid fa-crow"></i>
+								<i class="fa-solid fa-kiwi-bird"></i>
+								<i class="fa-solid fa-horse"></i>
+								<i class="fa-solid fa-hippo"></i>
+								<i class="fa-solid fa-dog"></i>
+								<i class="fa-solid fa-shrimp"></i>
+							</span>
+							<h1 class="title">Camo Camera</h1>
+							<p class="subtitle">Technical Prototype v1</p>
+						</div>
+					</div>
+				</div>
+				<div class="column">
+					<div class="card">
+						<div class="card-content">
+							<div class="field is-grouped is-grouped-centered">
+								<div class="field mr-2">
+									<label class="label">Vision Type</label>
+									<div class="control has-icons-left">
+										<div class="select">
+											<select id="visionSelector" onchange="updateVision()">
+												<option value="0" selected="selected">Standard Human</option>
+												<option value="1">Protanopia</option>
+												<option value="2">Deuteranopia</option>
+												<option value="3">Tritanopia</option>
+												<option value="4">Achromatopsia</option>
+											</select>
+										</div>
+										<div class="icon is-small is-left">
+											<i class="fa-solid fa-eye"></i>
+										</div>
+									</div>
+								</div>
+
+								<div class="field mr-2">
+									<label class="label">Environment</label>
+									<div class="control has-icons-left">
+										<div class="select">
+											<select id="environmentSelector" onchange="updateEnvironment()">
+												<option value="0" selected="selected">Jungle</option>
+												<option value="1">Desert</option>
+												<option value="2">Tundra</option>
+												<option value="3">Ocean</option>
+												<option value="4">Pine Forest</option>
+											</select>
+										</div>
+										<div class="icon is-small is-left">
+											<i class="fa-solid fa-tree"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- p5.js Canvas -->
+		<div class="container p-6" id="p5cont">
+			<main></main>
+		</div>
+		<!-- Scores -->
+		<div class="container">
+			<div class="card">
+				<div class="card-content">
+					<nav class="level">
+						<div class="level-item has-text-centered">
+							<div>
+								<p class="heading">Hue Difference</p>
+								<p class="title" id="hDiffP">25%</p>
+							</div>
+						</div>
+						<div class="level-item has-text-centered">
+							<div>
+								<p class="heading">Saturation Difference</p>
+								<p class="title" id="sDiffP">25%</p>
+							</div>
+						</div>
+						<div class="level-item has-text-centered">
+							<div>
+								<p class="heading">Brightness Difference</p>
+								<p class="title" id="bDiffP">25%</p>
+							</div>
+						</div>
+						<div class="level-item has-text-centered">
+							<div>
+								<p class="heading">Overall Score</p>
+								<p class="title" id="camoScore">100%</p>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="sketch.js"></script>
+</body>
