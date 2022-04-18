@@ -1,4 +1,5 @@
-.column .card {
+
+.column .box {
   height: 100%;
 }
 
@@ -15,15 +16,91 @@ html {
 
 .card {
   backdrop-filter: blur(6px);
-  background-color: rgba(255,255,255,0.7);
+  background-color: rgba(255,255,255,0.85);
+}
+
+.box {
+  backdrop-filter: blur(6px);
+  background-color: rgba(255,255,255,0.85);
 }
 
 #bgColorPreview {
-  width: 96px;
-  height: 60px;
+  width: 100%;
+  height: 100px;
   background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+}
+
+.score {
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1.125;
+}
+
+.has-text-warning {
+  color: #CF6A2E !important;
+}
+
+.glitch {
+  font-family: 'Rubik Puddles', cursive;
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1.125;
+}
+
+.no-vertical-space {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+#spectrum {
+  background-image: url('/images/spectrum.png');
+  background-size: cover;
+  height: 20px;
+}
+
+#map-box {
+  position: relative;
+  background-image: url('/images/map.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 300px;
+  height: 450px;
+}
+
+#map-box .img {
+  position: absolute;
+}
+
+#map-owl {
+  position: absolute;
+  height: 50px;
+  top: 200px;
+  left: 70px;
+}
+
+#map-dog {
+  position: absolute;
+  width: 50px;
+  top: 230px;
+  left: 130px;
+}
+
+#map-squirrel {
+  position: absolute;
+  height: 40px;
+  top: 180px;
+  left: 140px;
+}
+
+#map-shrimp {
+  position: absolute;
+  width: 50px;
+  top: 230px;
+  right: 40px;
 }

@@ -8,8 +8,8 @@ var environmentMode = 0;
 var avgCaptureColor = [0, 0, 0];
 
 var webcam;
-var bgColorPreview = $('#bgColorPreview');
-var avgColorPreview = $('#avgColorPreview')
+var bgColorPreview = $("#bgColorPreview");
+var avgColorPreview = $("#avgColorPreview");
 
 var environmentColors = {
 	jungle: { r: 40, g: 124, b: 52 },
@@ -24,13 +24,13 @@ var currentBG = [environmentColors.jungle.r, environmentColors.jungle.g, environ
 updateEnvironment();
 
 function setup() {
-	canvas = createCanvas(640, 480);
-	canvas.id('webcam');
+	canvas = createCanvas(960, 540);
+	canvas.id("webcam");
 	pixelDensity(1);
 	background(255);
 
 	capture = createCapture(VIDEO);
-	capture.size(640, 480);
+	capture.size(960, 540);
 	capture.hide();
 
 	webcam = document.getElementById("webcam");
@@ -101,7 +101,7 @@ function draw() {
 
 		// Update Image on Canvas
 		capimg.updatePixels();
-		image(capimg, 0, 0, 640, 480);
+		image(capimg, 0, 0, 960, 540);
 	}
 	// Calculate Average Colors
 	var numPixels = capimg.width * capimg.height;
@@ -112,6 +112,8 @@ function draw() {
 	// Update People Average Color Preview in Scoreboard
 	let avgStr = "rgb(" + avgCaptureColor[0] + "," + avgCaptureColor[1] + "," + avgCaptureColor[2] + ")";
 	avgColorPreview.css("color", avgStr);
+
+	// ? Could accessability contrast standards be used to calculate score??
 
 	// Compare Average Webcam Color to Background Color
 	var webcamHSB = RGBToHSB(avgCaptureColor[0], avgCaptureColor[1], avgCaptureColor[2]);
@@ -135,7 +137,7 @@ function draw() {
 	// Calculate & Update Overall Score on Page
 	var camoScore = 100 - Math.max(vDiffHper, vDiffSper, vDiffBper);
 	var scoreElem = $("#camoScore");
-	scoreElem.html(camoScore + "/100");
+	scoreElem.html(camoScore + "%");
 	if (camoScore >= 80) {
 		scoreElem.addClass("has-text-success");
 		scoreElem.removeClass("has-text-warning");
@@ -161,6 +163,37 @@ function updateVision() {
 	// Update mode value used in p5.js code
 	visionMode = $("#visionSelector").val();
 
+	if(visionMode == 0) {
+		$('#map-squirrel').css("filter", "grayscale(0%)")
+		$('#map-dog').css("filter", "grayscale(0%)")
+		$('#map-shrimp').css("filter", "grayscale(0%)")
+		$('#map-owl').css("filter", "grayscale(0%)")
+	}
+	else if(visionMode == 1) {
+		$('#map-squirrel').css("filter", "grayscale(0%)")
+		$('#map-dog').css("filter", "grayscale(100%)")
+		$('#map-shrimp').css("filter", "grayscale(100%)")
+		$('#map-owl').css("filter", "grayscale(100%)")
+	}
+	else if(visionMode == 2) {
+		$('#map-squirrel').css("filter", "grayscale(100%)")
+		$('#map-dog').css("filter", "grayscale(0%)")
+		$('#map-shrimp').css("filter", "grayscale(100%)")
+		$('#map-owl').css("filter", "grayscale(100%)")
+	}
+	else if(visionMode == 3) {
+		$('#map-squirrel').css("filter", "grayscale(100%)")
+		$('#map-dog').css("filter", "grayscale(100%)")
+		$('#map-shrimp').css("filter", "grayscale(0%)")
+		$('#map-owl').css("filter", "grayscale(100%)")
+	}
+	else if(visionMode == 4) {
+		$('#map-squirrel').css("filter", "grayscale(100%)")
+		$('#map-dog').css("filter", "grayscale(100%)")
+		$('#map-shrimp').css("filter", "grayscale(100%)")
+		$('#map-owl').css("filter", "grayscale(0%)")
+	}
+
 	// Call to update environment
 	updateEnvironment();
 }
@@ -175,23 +208,85 @@ function updateEnvironment() {
 	if (environmentMode == 0) {
 		currentBG = [environmentColors.jungle.r, environmentColors.jungle.g, environmentColors.jungle.b];
 		// Change Background
-		htmlElem.css('background-image', 'url("images/jungle.jpg")');
+		console.log("visionMode = " + visionMode);
+
+		if (visionMode == 0) {
+			htmlElem.css("background-image", 'url("images/human/jungle.jpg")');
+		} else if (visionMode == 1) {
+			htmlElem.css("background-image", 'url("images/squirrel/jungle.png")');
+		} else if (visionMode == 2) {
+			htmlElem.css("background-image", 'url("images/dog/jungle.png")');
+		} else if (visionMode == 3) {
+			htmlElem.css("background-image", 'url("images/crustaceans/jungle.png")');
+		} else if (visionMode == 4) {
+			htmlElem.css("background-image", 'url("images/owls/jungle.png")');
+		} else {
+			htmlElem.css("background-image", 'url("images/dwayne.jpeg")');
+		}
 	} else if (environmentMode == 1) {
 		currentBG = [environmentColors.desert.r, environmentColors.desert.g, environmentColors.desert.b];
 		// Change Background
-		htmlElem.css('background-image', 'url("images/desert.jpg")');
+		if (visionMode == 0) {
+			htmlElem.css("background-image", 'url("images/human/desert.jpg")');
+		} else if (visionMode == 1) {
+			htmlElem.css("background-image", 'url("images/squirrel/desert.png")');
+		} else if (visionMode == 2) {
+			htmlElem.css("background-image", 'url("images/dog/desert.png")');
+		} else if (visionMode == 3) {
+			htmlElem.css("background-image", 'url("images/crustaceans/desert.png")');
+		} else if (visionMode == 4) {
+			htmlElem.css("background-image", 'url("images/owls/desert.png")');
+		} else {
+			htmlElem.css("background-image", 'url("images/dwayne.jpeg")');
+		}
 	} else if (environmentMode == 2) {
 		currentBG = [environmentColors.tundra.r, environmentColors.tundra.g, environmentColors.tundra.b];
 		// Change Background
-		htmlElem.css('background-image', 'url("images/tundra.jpg")');
+		if (visionMode == 0) {
+			htmlElem.css("background-image", 'url("images/human/tundra.jpg")');
+		} else if (visionMode == 1) {
+			htmlElem.css("background-image", 'url("images/squirrel/tundra.png")');
+		} else if (visionMode == 2) {
+			htmlElem.css("background-image", 'url("images/dog/tundra.png")');
+		} else if (visionMode == 3) {
+			htmlElem.css("background-image", 'url("images/crustaceans/tundra.png")');
+		} else if (visionMode == 4) {
+			htmlElem.css("background-image", 'url("images/owls/tundra.png")');
+		} else {
+			htmlElem.css("background-image", 'url("images/dwayne.jpeg")');
+		}
 	} else if (environmentMode == 3) {
 		currentBG = [environmentColors.ocean.r, environmentColors.ocean.g, environmentColors.ocean.b];
 		// Change Background
-		htmlElem.css('background-image', 'url("images/ocean.jpg")');
+		if (visionMode == 0) {
+			htmlElem.css("background-image", 'url("images/human/ocean.jpg")');
+		} else if (visionMode == 1) {
+			htmlElem.css("background-image", 'url("images/squirrel/ocean.png")');
+		} else if (visionMode == 2) {
+			htmlElem.css("background-image", 'url("images/dog/ocean.png")');
+		} else if (visionMode == 3) {
+			htmlElem.css("background-image", 'url("images/crustaceans/ocean.png")');
+		} else if (visionMode == 4) {
+			htmlElem.css("background-image", 'url("images/owls/ocean.png")');
+		} else {
+			htmlElem.css("background-image", 'url("images/dwayne.jpeg")');
+		}
 	} else if (environmentMode == 4) {
 		currentBG = [environmentColors.forest.r, environmentColors.forest.g, environmentColors.forest.b];
 		// Change Background
-		htmlElem.css('background-image', 'url("images/gapines.jpg")');
+		if (visionMode == 0) {
+			htmlElem.css("background-image", 'url("images/human/gapines.jpg")');
+		} else if (visionMode == 1) {
+			htmlElem.css("background-image", 'url("images/squirrel/gapines.png")');
+		} else if (visionMode == 2) {
+			htmlElem.css("background-image", 'url("images/dog/gapines.png")');
+		} else if (visionMode == 3) {
+			htmlElem.css("background-image", 'url("images/crustaceans/gapines.png")');
+		} else if (visionMode == 4) {
+			htmlElem.css("background-image", 'url("images/owls/gapines.png")');
+		} else {
+			htmlElem.css("background-image", 'url("images/dwayne.jpeg")');
+		}
 	} else {
 		currentBG = [255, 0, 0];
 	}
@@ -210,7 +305,6 @@ function updateEnvironment() {
 	// Update Background Color Preview in Scoreboard
 	let bgStr = "rgb(" + currentBG[0] + "," + currentBG[1] + "," + currentBG[2] + ")";
 	bgColorPreview.css("background-color", bgStr);
-
 }
 
 // ** COLOR VISION TRANSFORMATION FUNCTIONS **
@@ -285,4 +379,48 @@ function RGBToHSB(r, g, b) {
 		n = v - Math.min(r, g, b);
 	const h = n === 0 ? 0 : n && v === r ? (g - b) / n : v === g ? 2 + (b - r) / n : 4 + (r - g) / n;
 	return [60 * (h < 0 ? h + 6 : h), v && (n / v) * 100, v * 100];
+}
+
+function tapSquirrel() {
+	visionMode = 1
+	$("#visionSelector").val(1);
+	updateEnvironment()
+
+	$('#map-owl').css("filter", "grayscale(100%)")
+	$('#map-dog').css("filter", "grayscale(100%)")
+	$('#map-squirrel').css("filter", "grayscale(0%)")
+	$('#map-shrimp').css("filter", "grayscale(100%)")
+}
+
+function tapDog() {
+	visionMode = 2
+	$("#visionSelector").val(2);
+	updateEnvironment()
+
+	$('#map-owl').css("filter", "grayscale(100%)")
+	$('#map-dog').css("filter", "grayscale(0%)")
+	$('#map-squirrel').css("filter", "grayscale(100%)")
+	$('#map-shrimp').css("filter", "grayscale(100%)")
+}
+
+function tapShrimp() {
+	visionMode = 3
+	$("#visionSelector").val(3);
+	updateEnvironment()
+
+	$('#map-owl').css("filter", "grayscale(100%)")
+	$('#map-dog').css("filter", "grayscale(100%)")
+	$('#map-squirrel').css("filter", "grayscale(100%)")
+	$('#map-shrimp').css("filter", "grayscale(0%)")
+}
+
+function tapOwl() {
+	visionMode = 4
+	$("#visionSelector").val(4);
+	updateEnvironment()
+
+	$('#map-owl').css("filter", "grayscale(0%)")
+	$('#map-dog').css("filter", "grayscale(100%)")
+	$('#map-squirrel').css("filter", "grayscale(100%)")
+	$('#map-shrimp').css("filter", "grayscale(100%)")
 }

@@ -1,0 +1,73 @@
+<div class="box has-text-centered">
+  <div class="container">
+    <div class="block form has-text-centered">
+      <div class="field">
+        <label class="label">Vision Type</label>
+        <div class="control">
+          <div class="select">
+            <select id="visionSelector" onchange="updateVision()">
+              <!-- <option value="0" selected="selected">🙋🏻 Humans • Trichromacy</option>
+              <option value="1">🐿 Squirrels • Protanopia</option>
+              <option value="2">🐶 Dogs • Deuteranopia</option>
+              <option value="3">🦞 Crustaceans • Tritanopia</option>
+              <option value="4">🦉 Owls • Achromatopsia</option> -->
+              <option value="0" selected="selected">🙋🏻 Humans</option>
+              <option value="1">🐿 Squirrels</option>
+              <option value="2">🐶 Dogs</option>
+              <option value="3">🦞 Crustaceans</option>
+              <option value="4">🦉 Owls</option>
+            </select>
+          </div>
+          <!-- <div class="icon is-small is-left">
+            <i class="fa-solid fa-eye"></i>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="field">
+        <label class="label">Environment</label>
+        <div class="control">
+          <div class="select">
+            <select id="environmentSelector" onchange="updateEnvironment()">
+              <option value="0" selected="selected">🌴 Jungle</option>
+              <option value="1">🏜 Desert</option>
+              <option value="2">❄️ Tundra</option>
+              <option value="3">🌊 Ocean</option>
+              <option value="4">🌲 Pine Forest</option>
+            </select>
+          </div>
+          <!-- <div class="icon is-small is-left">
+            <i class="fa-solid fa-tree"></i>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="block has-text-centered">
+      <p class="heading">Average Color Preview</p>
+      <div id="bgColorPreview">
+        <span class="icon" id="avgColorPreview">
+          <i class="fa-solid fa-people-group fa-3x"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="block has-text-centered">
+      <p class="heading">Overall Score</p>
+      <p class="score" id="camoScore">100%</p>
+    </div>
+
+    <div class="block has-text-centered">
+      <p class="heading">HSB Difference Breakdown</p>
+      <p>
+        <span id="hDiffP"></span>
+        <span> / </span>
+        <span id="sDiffP"></span>
+        <span> / </span>
+        <span id="bDiffP"></span>
+      </p>
+    </div>
+  </div>
+</div>
