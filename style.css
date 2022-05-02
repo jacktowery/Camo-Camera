@@ -1,4 +1,23 @@
 
+body {
+  background-position: bottom right;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero {
+  background-color: #ffffff00;
+}
+
+.hero .hero-head,.hero-foot {
+  background-color: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+}
+
+
+
+
+/* Old Stuff */
 .column .box {
   height: 100%;
 }
@@ -35,8 +54,8 @@ html {
 }
 
 .score {
-  font-size: 4rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 800;
   line-height: 1.125;
 }
 
@@ -46,9 +65,21 @@ html {
 
 .glitch {
   font-family: 'Rubik Puddles', cursive;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 600;
   line-height: 1.125;
+}
+
+.puddles {
+  font-family: 'Rubik Puddles', cursive;
+}
+
+.bubbles {
+  font-family: 'Rubik Bubbles', cursive;
+}
+
+.chelsea {
+  font-family: 'Chelsea Market', cursive;
 }
 
 .no-vertical-space {
@@ -103,4 +134,8 @@ html {
   width: 50px;
   top: 230px;
   right: 40px;
+}
+
+#canvasTF {
+  display: none;
 }

@@ -8,137 +8,261 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Rubik+Puddles&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="style.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 		<script src="https://kit.fontawesome.com/9aef0c2001.js" crossorigin="anonymous"></script>
 
 		<script src="p5/p5.min.js"></script>
-		<title>Alpha Prototype</title>
+		<title>Camo Camera</title>
 	</head>
 
 	<body id="body">
-		<section class="section has-text-centered">
-			<div class="columns">
-				<div class="column">
-					<div class="box has-text-centered">
-						<div class="block has-text-centered">
-							<div id="map-box">
-								<img src="/images/owl.png" id="map-owl" onclick="tapOwl()" />
-								<img src="/images/dog.png" id="map-dog" onclick="tapDog()" />
-								<img src="/images/squirrel.png" id="map-squirrel" onclick="tapSquirrel()" />
-								<img src="/images/shrimp.png" id="map-shrimp" onclick="tapShrimp()" />
+		<!-- Unseen webcam capture video -->
+		<video class="input_video" style="display: none"></video>
+		<!-- Unseen canvas to process background removal -->
+		<canvas id="canvasTF" width="1280px" height="720px"></canvas>
+
+		<section class="hero is-fullheight">
+			<div class="hero-head">
+				<header class="navbar is-dark">
+					<div class="container">
+						<div class="navbar-start">
+							<div class="navbar-item">
+								<img src="images/eyes.svg" style="height: 20px" class="mr-2" />
+								<p class="title has-text-white has-text-weight-semibold ml-2">
+									<span id="visionTitle">Human</span>
+									<span>Vision</span>
+								</p>
 							</div>
 						</div>
-
-						<div class="block form has-text-centered">
-							<div class="field">
-								<label class="label">Vision Type</label>
-								<div class="control">
-									<div class="select">
-										<select id="visionSelector" onchange="updateVision()">
-											<option value="0" selected="selected">🙋🏻 Humans • Trichromacy</option>
-											<option value="1">🐿 Squirrels • Protanopia</option>
-											<option value="2">🐶 Dogs • Deuteranopia</option>
-											<option value="3">🦞 Crustaceans • Tritanopia</option>
-											<option value="4">🦉 Owls • Achromatopsia</option>
-											<!-- <option value="0" selected="selected">🙋🏻 Humans</option>
-											<option value="1">🐿 Squirrels</option>
-											<option value="2">🐶 Dogs</option>
-											<option value="3">🦞 Crustaceans</option>
-											<option value="4">🦉 Owls</option> -->
-										</select>
-									</div>
-									<!-- <div class="icon is-small is-left">
-											<i class="fa-solid fa-eye"></i>
-										</div> -->
+	
+						<!-- Navbar Right -->
+						<div class="navbar-menu">
+							<div class="navbar-end">
+								<!-- Score -->
+								<div class="navbar-item">
+									<p id="camoScore" class="score no-vertical-space has-text-success">Camouflaged</p>
 								</div>
-							</div>
-						</div>
-
-						<div class="block">
-							<div class="field">
-								<label class="label">Environment</label>
-								<div class="control">
-									<div class="select">
-										<select id="environmentSelector" onchange="updateEnvironment()">
-											<option value="0" selected="selected">🌴 Jungle</option>
-											<option value="1">🏜 Desert</option>
-											<option value="2">❄️ Tundra</option>
-											<option value="3">🌊 Ocean</option>
-											<option value="4">🌲 Pine Forest</option>
-										</select>
-									</div>
-									<!-- <div class="icon is-small is-left">
-											<i class="fa-solid fa-tree"></i>
-										</div> -->
+								<div class="navbar-item">
+									<i id="camoScoreIcon" class="fa-solid fa-cicle-check fa-2xl has-text-success"></i>
+								</div>
+								<div class="navbar-item">
+									<p id="camoScoreNum" class="subtitle no-vertical-space has-text-success">100%</p>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</header>
+			</div>
 
-				<div class="column">
-					<div class="card mb-5">
-						<div class="card-content">
-							<h1 class="title glitch">Camo Camera</h1>
-							<p class="subtitle">How well do you camouflage?</p>
-						</div>
-					</div>
-
-					<div class="no-vertical-space" id="p5cont">
-						<main></main>
-					</div>
-					<div class="no-vertical-space" id="spectrum"></div>
-				</div>
-
-				<div class="column">
-					<div class="box has-text-centered">
-						<div class="block has-text-centered">
-							<div class="block has-text-centered">
-								<p class="heading">Overall Score</p>
-								<p class="score" id="camoScore">100%</p>
-							</div>
-						</div>
-
-						<div class="block has-text-centered">
-							<p class="heading">Average Color Preview</p>
-							<div id="bgColorPreview">
-								<span class="icon" id="avgColorPreview">
-									<i class="fa-solid fa-people-group fa-3x"></i>
-								</span>
-							</div>
-						</div>
-
-						<!-- <div class="block has-text-centered">
-							<p class="heading">HSB Difference Breakdown</p>
-							<p>
-								<span id="hDiffP"></span>
-								<span> / </span>
-								<span id="sDiffP"></span>
-								<span> / </span>
-								<span id="bDiffP"></span>
-							</p>
-						</div> -->
-
-						<div class="block has-text-centered">
-							<p class="heading">Hue Difference</p>
-							<p class="title" id="hDiffP"></p>
-						</div>
-
-						<div class="block has-text-centered">
-							<p class="heading">Saturation Difference</p>
-							<p class="title" id="sDiffP"></p>
-						</div>
-
-						<div class="block has-text-centered">
-							<p class="heading">Brightness Difference</p>
-							<p class="title" id="bDiffP"></p>
-						</div>
-
+			<div class="hero-body">
+				<div class="container has-text-centered">
+					<!-- Visible canvas displaying webacam w/ removed background & color processing -->
+					<canvas id="canvasC" width="1280px" height="720px"></canvas>
+					<div class="container has-text-centered mt-4">
+						<button class="button is-success is-light is-rounded mr-1" onclick="showVisionModal()"><i class="fa-solid fa-eye"></i>&nbsp; Change Vision</button>
+						<button class="button is-success is-light is-rounded ml-1" onclick="showEnvModal()"><i class="fa-solid fa-tree"></i>&nbsp; Change Environment</button>
 					</div>
 				</div>
 			</div>
+
 		</section>
+
+		<div class="modal" id="visionModal">
+			<div class="modal-background" onclick="hideVisionModal()"></div>
+			<div class="modal-content">
+				<div class="box has-background-white">
+					<div class="has-text-centered mb-3">
+						<p class="title has-text-weight-bold chelsea">Change Animal Vision</p>
+						<hr>
+					</div>
+
+					<!-- Humans -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-2 has-text-centered">
+							<button class="button is-success is-rounded" id="humanBtn" onclick="updateVision(0)">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+						<div class="column is-2 has-text-centered">
+							<i class="fa-solid fa-person-hiking fa-4x"></i>
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Humans</p>
+							<p>While some humans are color-blind, most can see red, green, and blue.</p>
+						</div>
+					</div>
+
+					<!-- Squirrels -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-2 has-text-centered">
+							<button class="button is-success is-rounded" id="squirrelBtn" onclick="updateVision(1)">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+						<div class="column is-2 has-text-centered">
+							<img src="/images/squirrel.png" style="max-height: 80px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Squirrels</p>
+							<p>Squirrels are red color-blind, which means they can't see the color red.</p>
+						</div>
+					</div>
+
+					<!-- Dogs -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-2 has-text-centered">
+							<button class="button is-success is-rounded" id="dogBtn" onclick="updateVision(2)">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+						<div class="column is-2 has-text-centered">
+							<img src="/images/dog.png" style="max-height: 80px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Dogs</p>
+							<p>Dogs are red-green color-blind! They can't see red or green, so their color vision is limited to only yellows and blues.</p>
+						</div>
+					</div>
+
+					<!-- Crustaceans -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-2 has-text-centered">
+							<button class="button is-success is-rounded" id="crustaceanBtn" onclick="updateVision(3)">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+						<div class="column is-2 has-text-centered">
+							<img src="/images/shrimp.png" style="max-height: 80px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Crustaceans</p>
+							<p>Crustaceans are blue-yellow color-blind! However, they can also see colors in the UV spectrum that even humans can't see!</p>
+						</div>
+					</div>
+
+					<!-- Owls -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-2 has-text-centered">
+							<button class="button is-success is-rounded" id="owlBtn" onclick="updateVision(4)">
+								<i class="fa-solid fa-eye"></i>
+							</button>
+						</div>
+						<div class="column is-2 has-text-centered">
+							<img src="/images/owl.png" style="max-height: 80px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Owls</p>
+							<p>Owls only see in black and white! As nocturnal animals, this helps them find prey in the dark of night.</p>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<button class="modal-close is-large" aria-label="close"></button>
+		</div>
+
+		<div class="modal" id="envModal">
+			<div class="modal-background" onclick="hideEnvModal()"></div>
+			<div class="modal-content">
+				<div class="box has-background-white">
+					<div class="has-text-centered mb-3">
+						<p class="title has-text-weight-bold chelsea">Change Environment</p>
+						<hr>
+					</div>
+
+					<!-- Jungle -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-1 has-text-centered">
+							<button class="button is-success is-rounded" id="jungleBtn" onclick="updateEnvironment(0)">
+								<i class="fa-brands fa-pagelines"></i>
+							</button>
+						</div>
+						<div class="column is-4 has-text-centered">
+							<img src="/images/human/jungle.jpg" style="max-height: 100px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Jungle</p>
+							<p>Dive deep into this dense, green jungle. Watch out for tigers!</p>
+						</div>
+					</div>
+
+					<!-- Desert -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-1 has-text-centered">
+							<button class="button is-success is-rounded" id="desertBtn" onclick="updateEnvironment(1)">
+								<i class="fa-solid fa-sun"></i>
+							</button>
+						</div>
+						<div class="column is-4 has-text-centered">
+							<img src="/images/human/desert.jpg" style="max-height: 100px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Desert</p>
+							<p>Sift through the yellow sands in the dry, arid desert. Watch out for snakes!</p>
+						</div>
+					</div>
+
+					<!-- Tundra -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-1 has-text-centered">
+							<button class="button is-success is-rounded" id="tundraBtn" onclick="updateEnvironment(2)">
+								<i class="fa-solid fa-snowflake"></i>
+							</button>
+						</div>
+						<div class="column is-4 has-text-centered">
+							<img src="/images/human/tundra.jpg" style="max-height: 100px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Tundra</p>
+							<p>Crunch through the powdery white snow in the arctic tundra. Watch out for owls!</p>
+						</div>
+					</div>
+
+					<!-- Ocean -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-1 has-text-centered">
+							<button class="button is-success is-rounded" id="oceanBtn" onclick="updateEnvironment(3)">
+								<i class="fa-solid fa-water"></i>
+							</button>
+						</div>
+						<div class="column is-4 has-text-centered">
+							<img src="/images/human/ocean.jpg" style="max-height: 100px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Ocean</p>
+							<p>Dive into the deep blue sea. Watch out for sharks!</p>
+						</div>
+					</div>
+
+					<!-- Pines -->
+					<div class="columns is-gapless is-vcentered">
+						<div class="column is-1 has-text-centered">
+							<button class="button is-success is-rounded" id="pinesBtn" onclick="updateEnvironment(4)">
+								<i class="fa-solid fa-tree"></i>
+							</button>
+						</div>
+						<div class="column is-4 has-text-centered">
+							<img src="/images/human/gapines.jpg" style="max-height: 100px;">
+						</div>
+						<div class="column ml-2">
+							<p class="is-size-3 chelsea">Pine Forest</p>
+							<p>Hike through a familar brown-and-green Georgia pine forest. Watch out for foxes!</p>
+						</div>
+					</div>
+
+					
+					
+				</div>
+			</div>
+			<button class="modal-close is-large" aria-label="close"></button>
+		</div>
 
 		<script src="sketch.js"></script>
 	</body>

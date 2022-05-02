@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Rubik+Puddles&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="style.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://kit.fontawesome.com/9aef0c2001.js" crossorigin="anonymous"></script>
+
+		<script src="p5/p5.min.js"></script>
+		<title>Alpha Prototype</title>
+	</head>
+
+	<body id="body">
+		<section class="section has-text-centered">
+			<div class="columns">
+				<div class="column">
+					<div class="box has-text-centered">
+						<div class="block has-text-centered">
+							<div id="map-box">
+								<img src="/images/owl.png" id="map-owl" onclick="tapOwl()" />
+								<img src="/images/dog.png" id="map-dog" onclick="tapDog()" />
+								<img src="/images/squirrel.png" id="map-squirrel" onclick="tapSquirrel()" />
+								<img src="/images/shrimp.png" id="map-shrimp" onclick="tapShrimp()" />
+							</div>
+						</div>
+
+						<div class="block form has-text-centered">
+							<div class="field">
+								<label class="label">Vision Type</label>
+								<div class="control">
+									<div class="select">
+										<select id="visionSelector" onchange="updateVision()">
+											<option value="0" selected="selected">🙋🏻 Humans • Trichromacy</option>
+											<option value="1">🐿 Squirrels • Protanopia</option>
+											<option value="2">🐶 Dogs • Deuteranopia</option>
+											<option value="3">🦞 Crustaceans • Tritanopia</option>
+											<option value="4">🦉 Owls • Achromatopsia</option>
+											<!-- <option value="0" selected="selected">🙋🏻 Humans</option>
+											<option value="1">🐿 Squirrels</option>
+											<option value="2">🐶 Dogs</option>
+											<option value="3">🦞 Crustaceans</option>
+											<option value="4">🦉 Owls</option> -->
+										</select>
+									</div>
+									<!-- <div class="icon is-small is-left">
+											<i class="fa-solid fa-eye"></i>
+										</div> -->
+								</div>
+							</div>
+						</div>
+
+						<div class="block">
+							<div class="field">
+								<label class="label">Environment</label>
+								<div class="control">
+									<div class="select">
+										<select id="environmentSelector" onchange="updateEnvironment()">
+											<option value="0" selected="selected">🌴 Jungle</option>
+											<option value="1">🏜 Desert</option>
+											<option value="2">❄️ Tundra</option>
+											<option value="3">🌊 Ocean</option>
+											<option value="4">🌲 Pine Forest</option>
+										</select>
+									</div>
+									<!-- <div class="icon is-small is-left">
+											<i class="fa-solid fa-tree"></i>
+										</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="card mb-5">
+						<div class="card-content">
+							<h1 class="title glitch">Camo Camera</h1>
+							<p class="subtitle">How well do you camouflage?</p>
+						</div>
+					</div>
+
+					<div class="no-vertical-space" id="p5cont">
+						<main></main>
+					</div>
+					<div class="no-vertical-space" id="spectrum"></div>
+				</div>
+
+				<div class="column">
+					<div class="box has-text-centered">
+						<div class="block has-text-centered">
+							<div class="block has-text-centered">
+								<p class="heading">Overall Score</p>
+								<p class="score" id="camoScore">100%</p>
+							</div>
+						</div>
+
+						<div class="block has-text-centered">
+							<p class="heading">Average Color Preview</p>
+							<div id="bgColorPreview">
+								<span class="icon" id="avgColorPreview">
+									<i class="fa-solid fa-people-group fa-3x"></i>
+								</span>
+							</div>
+						</div>
+
+						<!-- <div class="block has-text-centered">
+							<p class="heading">HSB Difference Breakdown</p>
+							<p>
+								<span id="hDiffP"></span>
+								<span> / </span>
+								<span id="sDiffP"></span>
+								<span> / </span>
+								<span id="bDiffP"></span>
+							</p>
+						</div> -->
+
+						<div class="block has-text-centered">
+							<p class="heading">Hue Difference</p>
+							<p class="title" id="hDiffP"></p>
+						</div>
+
+						<div class="block has-text-centered">
+							<p class="heading">Saturation Difference</p>
+							<p class="title" id="sDiffP"></p>
+						</div>
+
+						<div class="block has-text-centered">
+							<p class="heading">Brightness Difference</p>
+							<p class="title" id="bDiffP"></p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<script src="sketch.js"></script>
+	</body>
+</html>
